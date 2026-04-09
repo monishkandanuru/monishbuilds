@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Globe, Smartphone, Code2 } from "lucide-react";
+import { ArrowRight, Sparkles, Globe, Smartphone, Code2, MapPin, GraduationCap } from "lucide-react";
 const floatingCards = [
   { icon: Globe, title: "NewGen Technologies", desc: "Pharma Infrastructure Web", color: "#7C5CFF", className: "floating-card top-[10%] right-[5%] md:right-[8%]", tech: "Next.js + Tailwind" },
   { icon: Smartphone, title: "SpendWise", desc: "Smart Expense Tracker", color: "#00D4FF", className: "floating-card-2 top-[45%] right-[2%] md:right-[5%]", tech: "React + Vercel" },
@@ -17,17 +17,27 @@ export default function Hero() {
       <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{ backgroundImage: "linear-gradient(#7C5CFF 1px, transparent 1px), linear-gradient(90deg, #7C5CFF 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
       <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-7">
+          <div className="space-y-6">
             <motion.div {...fadeUp(0.1)} className="inline-flex">
               <span className="flex items-center gap-2 text-xs font-body font-medium px-4 py-2 glass rounded-full border border-primary/20 text-primary">
                 <Sparkles size={12} className="text-secondary" />
                 Available for new projects
               </span>
             </motion.div>
-            <motion.div {...fadeUp(0.15)}>
-              <p className="text-muted font-body text-sm mb-1">Hi, I am</p>
-              <h2 className="font-heading font-bold text-2xl md:text-3xl gradient-text">Monish Kandanuru</h2>
-              <p className="text-muted text-sm font-body mt-1">Web & App Developer · Bangalore, India</p>
+            <motion.div {...fadeUp(0.15)} className="glass rounded-2xl px-5 py-4 border border-white/5 inline-block">
+              <p className="text-muted font-body text-xs mb-1 uppercase tracking-widest">About Me</p>
+              <h2 className="font-heading font-bold text-xl gradient-text mb-1">Monish Kandanuru</h2>
+              <div className="flex flex-wrap gap-3 mt-2">
+                <span className="flex items-center gap-1.5 text-xs text-muted font-body">
+                  <MapPin size={11} className="text-primary" /> Bangalore, India
+                </span>
+                <span className="flex items-center gap-1.5 text-xs text-muted font-body">
+                  <GraduationCap size={11} className="text-secondary" /> B.E. Computer Science
+                </span>
+                <span className="flex items-center gap-1.5 text-xs text-muted font-body">
+                  <Code2 size={11} className="text-primary" /> Full Stack + Android
+                </span>
+              </div>
             </motion.div>
             <motion.h1 {...fadeUp(0.2)} className="font-heading font-bold text-4xl md:text-5xl lg:text-[52px] leading-[1.1] tracking-tight">
               Your Website Should{" "}
@@ -49,7 +59,7 @@ export default function Hero() {
               </a>
               <a href="/work" className="btn-secondary">View My Work</a>
             </motion.div>
-            <motion.div {...fadeUp(0.55)} className="flex flex-wrap items-center gap-3 pt-2">
+            <motion.div {...fadeUp(0.55)} className="flex flex-wrap items-center gap-3 pt-1">
               {["Real project experience", "Modern design", "Scalable solutions"].map(function(item, i) {
                 return (
                   <span key={i} className="flex items-center gap-1.5 text-xs text-muted font-body">
@@ -59,18 +69,23 @@ export default function Hero() {
                 );
               })}
             </motion.div>
-            <motion.div {...fadeUp(0.65)} className="flex gap-8 pt-2">
-              {[{ num: "5+", label: "Projects Shipped" }, { num: "3+", label: "Tech Stacks" }, { num: "100%", label: "Client Focus" }].map(function(stat, i) {
+            <motion.div {...fadeUp(0.65)} className="grid grid-cols-3 gap-4 pt-2">
+              {[
+                { num: "5+", label: "Projects Shipped", sub: "Real clients & products" },
+                { num: "3+", label: "Tech Stacks", sub: "Web, Mobile, Android" },
+                { num: "100%", label: "Client Focus", sub: "Outcome over output" }
+              ].map(function(stat, i) {
                 return (
-                  <div key={i}>
-                    <div className="font-heading font-bold text-2xl gradient-text">{stat.num}</div>
-                    <div className="text-xs text-muted font-body mt-0.5">{stat.label}</div>
+                  <div key={i} className="glass rounded-xl p-3 border border-white/5 text-center">
+                    <div className="font-heading font-bold text-xl gradient-text">{stat.num}</div>
+                    <div className="text-xs text-white font-body font-medium mt-0.5">{stat.label}</div>
+                    <div className="text-[10px] text-muted font-body mt-0.5">{stat.sub}</div>
                   </div>
                 );
               })}
             </motion.div>
           </div>
-          <div className="relative h-[500px] hidden md:block">
+          <div className="relative h-[520px] hidden md:block">
             {floatingCards.map(function(card, i) {
               return (
                 <motion.div key={i} initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.15, duration: 0.6, ease: "easeOut" }} className={"absolute " + card.className + " w-[200px]"}>
@@ -103,7 +118,7 @@ export default function Hero() {
                 </motion.div>
               </div>
             </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.6 }} className="absolute bottom-8 left-0 right-0 text-center">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.6 }} className="absolute bottom-4 left-0 right-0 text-center">
               <p className="text-xs text-muted/50 font-body italic">"Your project deserves better than average."</p>
             </motion.div>
           </div>

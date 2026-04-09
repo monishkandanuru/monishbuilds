@@ -175,7 +175,7 @@ export default function Services() {
               {/* CTA */}
               <div className="mt-6 pt-5 border-t border-white/5">
                 <a
-                  href="#contact"
+                  href="/contact"
                   className="text-sm font-body font-medium inline-flex items-center gap-1.5 transition-all duration-300"
                   style={{ color: service.color }}
                 >
@@ -198,7 +198,7 @@ export default function Services() {
           className="text-center text-muted text-sm font-body mt-12"
         >
           Not sure which service fits your needs?{" "}
-          <a href="#contact" className="text-primary hover:underline">
+          <a href="/contact" className="text-primary hover:underline">
             Let's figure it out together.
           </a>
         </motion.p>

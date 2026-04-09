@@ -8,9 +8,10 @@ const projects = [
     id: "newgen",
     label: "Client Work",
     title: "NewGen Technologies",
-    tagline: "A pharmaceutical consultancy needed more than a website - they needed a brand presence.",
-    problem: "Their old site failed to communicate expertise and convert inquiries.",
-    solution: "Built a professional, SEO-ready site that communicates authority, showcases services, and drives client inquiries.",
+    tagline: "Turning a pharmaceutical consultancy into a credible digital brand.",
+    problem: "The client had no online presence. Potential customers couldn't find them, and those who did couldn't understand what they offered.",
+    solution: "Built a fast, professional website with clear service pages, a working contact form, and SEO structure — giving them a brand presence that matches their expertise.",
+    result: "Live and actively receiving client inquiries. The client now shares the link as their primary business introduction.",
     tech: ["Next.js 14", "Tailwind CSS", "Vercel", "Nodemailer"],
     icon: Globe,
     color: "#7C5CFF",
@@ -25,9 +26,10 @@ const projects = [
     id: "spendwise",
     label: "Web App",
     title: "SpendWise",
-    tagline: "People lose track of money because tracking feels like work.",
-    problem: "Most expense apps are bloated, confusing, or too generic to actually change habits.",
-    solution: "A clean, focused expense tracker with visual breakdowns that makes understanding your finances feel effortless.",
+    tagline: "Making personal finance feel simple, not stressful.",
+    problem: "Most people avoid tracking expenses because existing tools are either too complex or too basic to be useful in daily life.",
+    solution: "Built a clean, fast expense tracker with visual spending breakdowns, category management, and a minimal UI that users actually want to open.",
+    result: "Fully functional and live. Users can track, categorise, and understand their spending in under 30 seconds.",
     tech: ["React", "Vercel", "Chart.js", "LocalStorage"],
     icon: Smartphone,
     color: "#00D4FF",
@@ -40,11 +42,12 @@ const projects = [
   },
   {
     id: "vaulteye",
-    label: "Security App",
+    label: "Android App",
     title: "VaultEye",
-    tagline: "Security monitoring should be accessible, not enterprise-only.",
-    problem: "Existing solutions were complex, costly, or required expensive hardware setups.",
-    solution: "A lightweight Android app that turns any device into a smart security monitor with real-time alerts and a clean dashboard.",
+    tagline: "Professional-grade security monitoring without the enterprise price tag.",
+    problem: "Small businesses and individuals needed security monitoring but couldn't afford or configure enterprise CCTV systems.",
+    solution: "Built a native Android app that converts any phone into a live security monitor with motion detection, real-time alerts, and a clean dashboard.",
+    result: "Built and tested. APK release coming soon — GitHub and download link will be added on launch.",
     tech: ["Android", "Java", "Firebase", "CameraX API"],
     icon: ShieldCheck,
     color: "#7C5CFF",
@@ -79,15 +82,19 @@ function ProjectCard(props: { project: typeof projects[0]; index: number }) {
         <ArrowUpRight size={16} className="text-muted group-hover:text-white transition-colors duration-300 mt-1" />
       </div>
       <h3 className="font-heading font-bold text-xl text-white mb-1 relative z-10">{project.title}</h3>
-      <p className="text-muted text-sm font-body italic mb-4 relative z-10">{'"' + project.tagline + '"'}</p>
+      <p className="text-muted text-sm font-body italic mb-5 relative z-10">{project.tagline}</p>
       <div className="space-y-3 mb-5 relative z-10">
         <div className="flex gap-3">
-          <span className="text-red-400/70 text-xs font-body font-semibold pt-0.5 flex-shrink-0">Problem</span>
+          <span className="text-red-400/70 text-xs font-body font-semibold pt-0.5 flex-shrink-0 w-14">Problem</span>
           <p className="text-muted text-sm font-body leading-relaxed">{project.problem}</p>
         </div>
         <div className="flex gap-3">
-          <span className="text-xs font-body font-semibold pt-0.5 flex-shrink-0" style={{ color: project.color }}>Solution</span>
+          <span className="text-xs font-body font-semibold pt-0.5 flex-shrink-0 w-14" style={{ color: project.color }}>Solution</span>
           <p className="text-white/80 text-sm font-body leading-relaxed">{project.solution}</p>
+        </div>
+        <div className="flex gap-3">
+          <span className="text-green-400/80 text-xs font-body font-semibold pt-0.5 flex-shrink-0 w-14">Result</span>
+          <p className="text-white/60 text-sm font-body leading-relaxed italic">{project.result}</p>
         </div>
       </div>
       <div className="flex flex-wrap gap-2 mb-6 relative z-10">
@@ -112,6 +119,12 @@ function ProjectCard(props: { project: typeof projects[0]; index: number }) {
           )}
         </div>
       )}
+      {!hasLinks && project.id === "vaulteye" && (
+        <div className="pt-4 border-t border-white/5 relative z-10">
+          <span className="text-xs text-muted font-body italic">APK + GitHub releasing soon — check back or </span>
+          <a href="/contact" className="text-xs text-primary hover:underline font-body">get notified.</a>
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -127,7 +140,7 @@ export default function Projects() {
           <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl">
             Projects That <span className="gradient-text">Solve Real Problems</span>
           </h2>
-          <p className="font-body text-muted max-w-xl mx-auto text-base">Every project here was built around a specific business problem. Not just to look good - but to actually work.</p>
+          <p className="font-body text-muted max-w-xl mx-auto text-base">Every project here started with a real problem. This is what was built, why it was built, and what happened after.</p>
         </motion.div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map(function(project, i) {
@@ -136,7 +149,7 @@ export default function Projects() {
         </div>
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4, duration: 0.5 }} className="text-center mt-14">
           <p className="text-muted font-body text-sm mb-5">Have a project in mind? Let's build something better.</p>
-          <a href="#contact" className="btn-primary">
+          <a href="/contact" className="btn-primary">
             <span className="flex items-center gap-2">Start Your Project <ArrowUpRight size={15} /></span>
           </a>
         </motion.div>
