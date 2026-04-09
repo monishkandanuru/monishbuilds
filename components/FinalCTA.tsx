@@ -49,13 +49,13 @@ export default function FinalCTA() {
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4 justify-center items-center pt-2">
-            <a href="#contact" className="btn-primary text-base py-4 px-8">
+            <a href="/contact" className="btn-primary text-base py-4 px-8">
               <span className="flex items-center gap-2">
                 Start Your Project
                 <ArrowRight size={18} />
               </span>
             </a>
-            <a href="#projects" className="btn-secondary text-base py-4 px-8">
+            <a href="/work" className="btn-secondary text-base py-4 px-8">
               View My Work
             </a>
           </div>
