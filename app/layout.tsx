@@ -3,13 +3,17 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Monish Kandanuru — Web & App Developer",
   description: "I design and build high-quality websites and apps that help businesses attract, impress, and convert customers.",
-  keywords: "web developer, app developer, Next.js, React, mobile app, Bangalore, India",
+  keywords: "web developer, app developer, Next.js, React, mobile app, Bangalore, India, Monish Kandanuru",
   icons: { icon: "/favicon.svg" },
+  verification: {
+    google: "tkpCW4Y_AjKJSgLv4OpDAeCilZtY6sF5Im7dpeky9Gs",
+  },
   openGraph: {
     title: "Monish Kandanuru — Web & App Developer",
     description: "High-quality websites and apps that help businesses attract, impress, and convert customers.",
     type: "website",
     locale: "en_IN",
+    url: "https://monishbuilds.vercel.app",
   },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
