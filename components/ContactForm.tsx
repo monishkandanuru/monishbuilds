@@ -4,26 +4,75 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { Send, MessageCircle, ChevronDown, User, Mail, FileText, Target, Banknote, Clock } from "lucide-react";
 const WHATSAPP_NUMBER = "919880702013";
-const FORMSPREE_ID = "YOUR_FORM_ID";
-const serviceOptions = [{ value: "business-website", label: "Business Website" },{ value: "web-app", label: "Web Application" },{ value: "mobile-app", label: "Mobile App" },{ value: "custom-solution", label: "Custom Solution" },{ value: "not-sure", label: "Not Sure Yet" }];
-const budgetOptions = [{ value: "5k-10k", label: "5,000 - 10,000" },{ value: "10k-25k", label: "10,000 - 25,000" },{ value: "25k-50k", label: "25,000 - 50,000" },{ value: "50k+", label: "50,000+" }];
-const timelineOptions = [{ value: "asap", label: "ASAP" },{ value: "1month", label: "Within 1 month" },{ value: "flexible", label: "Flexible" }];
+const WEB3FORMS_KEY = "09f97344-f589-4ecb-a192-0732f7213cce";
+const serviceOptions = [
+  { value: "business-website", label: "Business Website" },
+  { value: "web-app", label: "Web Application" },
+  { value: "mobile-app", label: "Mobile App" },
+  { value: "custom-solution", label: "Custom Solution" },
+  { value: "not-sure", label: "Not Sure Yet" },
+];
+const budgetOptions = [
+  { value: "5k-10k", label: "5,000 - 10,000" },
+  { value: "10k-25k", label: "10,000 - 25,000" },
+  { value: "25k-50k", label: "25,000 - 50,000" },
+  { value: "50k+", label: "50,000+" },
+];
+const timelineOptions = [
+  { value: "asap", label: "ASAP - I need this done quickly" },
+  { value: "1month", label: "Within 1 month" },
+  { value: "flexible", label: "Flexible - quality over speed" },
+];
 export default function ContactForm() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const [formData, setFormData] = useState({ name: "", email: "", service: "", goal: "", budget: "", timeline: "", details: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    service: "",
+    goal: "",
+    budget: "",
+    timeline: "",
+    details: "",
+  });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value } = e.target;
     setFormData(function(prev) { return { ...prev, [name]: value }; });
   }
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const subject = encodeURIComponent("New Project Inquiry - " + formData.service);
-    const body = encodeURIComponent("Name: " + formData.name + "\nEmail: " + formData.email + "\nService: " + formData.service + "\nGoal: " + formData.goal + "\nBudget: " + formData.budget + "\nTimeline: " + formData.timeline + "\nDetails: " + formData.details);
-    setTimeout(function() { setLoading(false); setSubmitted(true); fetch("https://formspree.io/f/" + FORMSPREE_ID, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData) }); }, 1000);
+    setError("");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: "New Project Inquiry - " + formData.service + " | monishbuilds.vercel.app",
+          from_name: "Monish Kandanuru Portfolio",
+          name: formData.name,
+          email: formData.email,
+          service: formData.service,
+          goal: formData.goal,
+          budget: formData.budget,
+          timeline: formData.timeline,
+          details: formData.details,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        setError("Something went wrong. Please try WhatsApp instead.");
+      }
+    } catch {
+      setError("Network error. Please try WhatsApp instead.");
+    }
+    setLoading(false);
   }
   const isValid = formData.name && formData.email && formData.service && formData.goal && formData.budget;
   return (
@@ -38,19 +87,38 @@ export default function ContactForm() {
               <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight">
                 {"Let's Build "}<span className="gradient-text">Something Valuable</span>
               </h2>
-              <p className="font-body text-muted mt-4 text-base leading-relaxed">{"Tell me about your project and I'll respond with the best approach."}</p>
+              <p className="font-body text-muted mt-4 text-base leading-relaxed">
+                {"Fill in your project details — Monish will review and respond within 24 hours with the best approach for your needs."}
+              </p>
             </div>
             <div className="glass rounded-2xl p-5 space-y-3">
               <p className="font-heading font-semibold text-sm text-white mb-4">What happens next?</p>
-              {["I review your submission within 24 hours","I respond with an initial approach","We schedule a short discovery call","You get a clear scope, timeline and quote"].map(function(step, i) {
-                return (<div key={i} className="flex items-start gap-3"><div className="w-5 h-5 rounded-full bg-brand-gradient flex items-center justify-center flex-shrink-0 mt-0.5"><span className="text-[9px] font-heading font-bold text-white">{i + 1}</span></div><p className="text-muted text-sm font-body">{step}</p></div>);
+              {[
+                "Monish reviews your submission within 24 hours",
+                "You get a response with questions or an initial approach",
+                "A short discovery call is scheduled",
+                "You receive a clear scope, timeline and quote",
+              ].map(function(step, i) {
+                return (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-brand-gradient flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-[9px] font-heading font-bold text-white">{i + 1}</span>
+                    </div>
+                    <p className="text-muted text-sm font-body">{step}</p>
+                  </div>
+                );
               })}
             </div>
             <div className="space-y-3">
               <p className="text-muted text-xs font-body">Prefer to chat directly?</p>
               <a href={"https://wa.me/" + WHATSAPP_NUMBER} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 w-full glass rounded-xl p-4 border border-green-500/20 hover:border-green-500/40 transition-all duration-300 group">
-                <div className="w-9 h-9 rounded-lg bg-green-500/15 flex items-center justify-center"><MessageCircle size={16} className="text-green-400" /></div>
-                <div><p className="font-heading font-semibold text-sm text-white">Chat on WhatsApp</p><p className="text-muted text-xs font-body">Quick questions welcome</p></div>
+                <div className="w-9 h-9 rounded-lg bg-green-500/15 flex items-center justify-center">
+                  <MessageCircle size={16} className="text-green-400" />
+                </div>
+                <div>
+                  <p className="font-heading font-semibold text-sm text-white">Chat with Monish on WhatsApp</p>
+                  <p className="text-muted text-xs font-body">Quick questions welcome</p>
+                </div>
                 <span className="ml-auto text-muted group-hover:text-green-400 transition-colors text-sm">{"→"}</span>
               </a>
             </div>
@@ -58,21 +126,31 @@ export default function ContactForm() {
           <motion.div initial={{ opacity: 0, x: 40 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }}>
             {submitted ? (
               <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass rounded-2xl p-10 text-center space-y-4 border border-primary/20">
-                <div className="w-16 h-16 rounded-full bg-brand-gradient flex items-center justify-center mx-auto"><Send size={24} className="text-white" /></div>
-                <h3 className="font-heading font-bold text-2xl text-white">Message Sent!</h3>
-                <p className="text-muted font-body">{"Thanks! I'll get back to you within 24 hours."}</p>
-                <button onClick={function() { setSubmitted(false); }} className="btn-secondary text-sm mt-4">Send Another</button>
+                <div className="w-16 h-16 rounded-full bg-brand-gradient flex items-center justify-center mx-auto">
+                  <Send size={24} className="text-white" />
+                </div>
+                <h3 className="font-heading font-bold text-2xl text-white">Message Received!</h3>
+                <p className="text-muted font-body">
+                  {"Thanks for reaching out. Monish will review your project brief and get back to you within 24 hours."}
+                </p>
+                <div className="pt-2 space-y-2">
+                  <p className="text-xs text-muted font-body">Want a faster response?</p>
+                  <a href={"https://wa.me/" + WHATSAPP_NUMBER} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-green-400 hover:text-green-300 font-body transition-colors">
+                    <MessageCircle size={14} />
+                    Chat on WhatsApp
+                  </a>
+                </div>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="glass rounded-2xl p-7 space-y-5">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="flex items-center gap-1.5 text-xs text-muted font-body"><User size={11} /> Your Name *</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Rahul Sharma" className="premium-input" required />
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Your full name" className="premium-input" required />
                   </div>
                   <div className="space-y-1.5">
                     <label className="flex items-center gap-1.5 text-xs text-muted font-body"><Mail size={11} /> Email Address *</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="rahul@business.com" className="premium-input" required />
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="your@email.com" className="premium-input" required />
                   </div>
                 </div>
                 <div className="space-y-1.5">
@@ -113,15 +191,24 @@ export default function ContactForm() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="flex items-center gap-1.5 text-xs text-muted font-body"><FileText size={11} /> Project Details</label>
-                  <textarea name="details" value={formData.details} onChange={handleChange} rows={4} placeholder="Describe your project..." className="premium-input resize-none" />
+                  <textarea name="details" value={formData.details} onChange={handleChange} rows={4} placeholder="Tell Monish about your project, business, target audience, any references..." className="premium-input resize-none" />
                 </div>
+                {error && (
+                  <div className="glass rounded-xl p-3 border border-red-500/20">
+                    <p className="text-red-400 text-xs font-body">{error}</p>
+                  </div>
+                )}
                 <div className="pt-2 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                   <button type="submit" disabled={!isValid || loading} className="btn-primary disabled:opacity-40 disabled:cursor-not-allowed">
                     <span className="flex items-center gap-2">
-                      {loading ? (<><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Sending...</>) : (<><Send size={15} />Send My Brief</>)}
+                      {loading ? (
+                        <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Sending...</>
+                      ) : (
+                        <><Send size={15} />Send to Monish</>
+                      )}
                     </span>
                   </button>
-                  <p className="text-muted text-xs font-body">I typically respond within 24 hours.</p>
+                  <p className="text-muted text-xs font-body">Monish responds within 24 hours.</p>
                 </div>
               </form>
             )}
