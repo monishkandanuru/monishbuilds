@@ -32,7 +32,7 @@ export default function Hero() {
                   <MapPin size={11} className="text-primary" /> Bangalore, India
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-muted font-body">
-                  <GraduationCap size={11} className="text-secondary" /> B.E. Computer Science
+                  <GraduationCap size={11} className="text-secondary" /> B.Tech Computer Science
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-muted font-body">
                   <Code2 size={11} className="text-primary" /> Full Stack + Android
