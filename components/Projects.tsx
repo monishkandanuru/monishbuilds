@@ -55,7 +55,7 @@ const projects = [
     liveUrl: null,
     apkUrl: null,
     githubUrl: null,
-    badge: "Coming Soon",
+    badge: "Android APK",
     badgeColor: "#7C5CFF",
   },
 ];
