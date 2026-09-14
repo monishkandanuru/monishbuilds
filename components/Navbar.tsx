@@ -1,77 +1,69 @@
 "use client";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, MessageCircle } from "lucide-react";
-const WHATSAPP_NUMBER = "919880702013";
-const navLinks = [
-  { label: "Home", href: "/" }, { label: "Work", href: "/work" },
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+const links = [
+  { label: "Work", href: "/work" },
+  { label: "About", href: "/why-me" },
   { label: "Services", href: "/services" },
-  { label: "Why Me", href: "/why-me" },
-  { label: "Contact", href: "/contact" },
 ];
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  useEffect(function() {
-    const onScroll = function() { setScrolled(window.scrollY > 40); };
-    window.addEventListener("scroll", onScroll);
-    return function() { window.removeEventListener("scroll", onScroll); };
+  const [open, setOpen] = useState(false);
+  const path = usePathname();
+  useEffect(() => {
+    const close = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
   }, []);
   return (
-    <>
-      <motion.nav initial={{ y: -100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6, ease: "easeOut" }} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "py-3 glass border-b border-white/5 shadow-glass" : "py-5 bg-transparent"}`}>
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <a href="/" className="font-heading font-bold text-xl tracking-tight flex items-center gap-2">
-            <span className="gradient-text">MK</span>
-            <span className="text-white/30 font-light">|</span>
-            <span className="text-white/70 text-sm font-body font-normal tracking-wide">Monish Kandanuru</span>
-          </a>
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map(function(link) {
-              return (
-                <a key={link.href} href={link.href} className="text-muted hover:text-white text-sm font-body transition-colors duration-300 relative group">
-                  {link.label}
-                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300" />
-                </a>
-              );
-            })}
-          </div>
-          <div className="hidden md:flex items-center gap-3">
-            <a href={"https://wa.me/" + WHATSAPP_NUMBER} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-body text-muted hover:text-white transition-colors duration-300 px-4 py-2 glass rounded-full border border-white/5 hover:border-green-500/30">
-              <MessageCircle size={14} className="text-green-400" />
-              Chat on WhatsApp
-            </a>
-            <a href="/contact" className="btn-primary text-sm py-2.5 px-6">
-              <span>Start Your Project</span>
-            </a>
-          </div>
-          <button onClick={function() { setMobileOpen(!mobileOpen); }} className="md:hidden text-white p-2 glass rounded-lg border border-white/10">
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-        </div>
-      </motion.nav>
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="fixed top-16 left-4 right-4 z-40 glass rounded-2xl border border-white/10 p-6 shadow-glass">
-            <div className="flex flex-col gap-4">
-              {navLinks.map(function(link) {
-                return (
-                  <a key={link.href} href={link.href} onClick={function() { setMobileOpen(false); }} className="text-muted hover:text-white font-body text-sm py-2 border-b border-white/5 transition-colors">
-                    {link.label}
-                  </a>
-                );
-              })}
-              <a href={"https://wa.me/" + WHATSAPP_NUMBER} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-muted py-2">
-                <MessageCircle size={14} className="text-green-400" />
-                Chat on WhatsApp
-              </a>
-              <a href="/contact" onClick={function() { setMobileOpen(false); }} className="btn-primary text-center text-sm">
-                <span>Start Your Project</span>
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+    <header className="site-header">
+      <div className="shell nav-inner">
+        <Link href="/" className="wordmark" aria-label="Monish Kandanuru home">
+          monish
+          <span aria-hidden="true" />
+          <small>DESIGN-MINDED DEVELOPER</small>
+        </Link>
+        <nav className="desktop-nav" aria-label="Main navigation">
+          {links.map((l) => (
+            <Link
+              aria-current={path === l.href ? "page" : undefined}
+              key={l.href}
+              href={l.href}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+        <Link className="nav-cta" href="/contact">
+          Let’s talk <ArrowUpRight size={17} />
+        </Link>
+        <button
+          className="menu-toggle"
+          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <X /> : <Menu />}
+        </button>
+      </div>
+      {open && (
+        <nav
+          id="mobile-nav"
+          className="mobile-nav"
+          aria-label="Mobile navigation"
+        >
+          {[...links, { label: "Let’s talk", href: "/contact" }].map((l) => (
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>
+              {l.label}
+              <ArrowUpRight size={20} />
+            </Link>
+          ))}
+        </nav>
+      )}
+    </header>
   );
 }

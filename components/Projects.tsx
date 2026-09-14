@@ -1,159 +1,341 @@
 "use client";
-import { useRef } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { ExternalLink, Download, Globe, Smartphone, ShieldCheck, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { ArrowUpRight, Plus, Minus, ShieldCheck, Dumbbell } from "lucide-react";
 const projects = [
   {
-    id: "newgen",
-    label: "Client Work",
-    title: "NewGen Technologies",
-    tagline: "Turning a pharmaceutical consultancy into a credible digital brand.",
-    problem: "The client had no online presence. Potential customers couldn't find them, and those who did couldn't understand what they offered.",
-    solution: "Built a fast, professional website with clear service pages, a working contact form, and SEO structure — giving them a brand presence that matches their expertise.",
-    result: "Live and actively receiving client inquiries. The client now shares the link as their primary business introduction.",
-    tech: ["Next.js 14", "Tailwind CSS", "Vercel", "Nodemailer"],
-    icon: Globe,
-    color: "#7C5CFF",
-    accentColor: "rgba(124,92,255,0.1)",
-    liveUrl: "https://newgenprojects.in",
-    apkUrl: null,
-    githubUrl: null,
-    badge: "Live Site",
-    badgeColor: "#7C5CFF",
+    name: "ThermoWatch",
+    category: "Web",
+    type: "CLIMATE TECH / SIH26083",
+    description: "Turning heat-risk intelligence into timely action.",
+    detail:
+      "A heatwave early-warning and decision-support prototype for Smart India Hackathon. It brings weather-informed risk assessment, district maps, forecasts, Kannada localisation, and response workflows into one interface.",
+    stack: "React / TypeScript / Cloudflare",
+    href: "https://thermowatch-sih26083.vercel.app/",
+    github: "https://github.com/monishkandanuru/thermowatch-sih26083",
+    key: "thermowatch",
+    image: "/projects/thermowatch.png",
+    imageAlt:
+      "ThermoWatch command centre with thermal stress indicators and an India district risk map",
+    status: "LIVE PROJECT",
+    features: [
+      "Explainable risk forecasts",
+      "Regional-language support",
+      "Officer response workflows",
+    ],
   },
   {
-    id: "spendwise",
-    label: "Web App",
-    title: "SpendWise",
-    tagline: "Making personal finance feel simple, not stressful.",
-    problem: "Most people avoid tracking expenses because existing tools are either too complex or too basic to be useful in daily life.",
-    solution: "Built a clean, fast expense tracker with visual spending breakdowns, category management, and a minimal UI that users actually want to open.",
-    result: "Fully functional and live. Users can track, categorise, and understand their spending in under 30 seconds.",
-    tech: ["React", "Vercel", "Chart.js", "LocalStorage"],
-    icon: Smartphone,
-    color: "#00D4FF",
-    accentColor: "rgba(0,212,255,0.1)",
-    liveUrl: "https://spendwisemanagement.vercel.app",
-    apkUrl: null,
-    githubUrl: null,
-    badge: "Live App",
-    badgeColor: "#00D4FF",
+    name: "FitAI",
+    category: "Web",
+    type: "FITNESS / FULL-STACK APPLICATION",
+    description: "A little progress. A healthier everyday.",
+    detail:
+      "A Python and Flask fitness journal with account authentication, adult BMI measurement history, workout logs, meal tracking, and a dashboard backed by saved records. The journal keeps user-entered records together in a focused, account-based experience.",
+    stack: "Python / Flask / SQL",
+    href: "https://github.com/monishkandanuru/FitAI",
+    github: "https://github.com/monishkandanuru/FitAI",
+    key: "fitai",
+    image: null,
+    imageAlt: "",
+    status: "SOURCE AVAILABLE",
+    features: [
+      "Workout and meal journals",
+      "Measurement history",
+      "Account-based dashboard",
+    ],
   },
   {
-    id: "vaulteye",
-    label: "Android App",
-    title: "VaultEye",
-    tagline: "Professional-grade security monitoring without the enterprise price tag.",
-    problem: "Small businesses and individuals needed security monitoring but couldn't afford or configure enterprise CCTV systems.",
-    solution: "Built a native Android app that converts any phone into a live security monitor with motion detection, real-time alerts, and a clean dashboard.",
-    result: "Built and tested. APK release coming soon — GitHub and download link will be added on launch.",
-    tech: ["Android", "Java", "Firebase", "CameraX API"],
-    icon: ShieldCheck,
-    color: "#7C5CFF",
-    accentColor: "rgba(124,92,255,0.1)",
-    liveUrl: null,
-    apkUrl: "https://github.com/monishkandanuru/VaultEye/releases/download/v2.0.0/app-release.apk",
-    githubUrl: "https://github.com/monishkandanuru/VaultEye",
-    badge: "Android APK",
-    badgeColor: "#7C5CFF",
+    name: "NewGen Technologies",
+    category: "Web",
+    type: "CLIENT WORK / BUSINESS WEBSITE",
+    description: "An established engineering business, clearly presented.",
+    detail:
+      "A collaborative website project for a pharmaceutical and cleanroom infrastructure company. The live site presents engineering services, healthcare segments, GMP consultancy, team information, and routes for prospective customers to get in touch.",
+    stack: "Next.js / Tailwind CSS",
+    href: "https://newgenprojects.in",
+    github: null,
+    key: "newgen",
+    image: "/projects/newgen.png",
+    imageAlt:
+      "NewGen Technologies website showing its cleanroom engineering services and contact links",
+    status: "LIVE PROJECT",
+    features: [
+      "Service-focused architecture",
+      "Responsive layouts",
+      "Collaborative development",
+    ],
+  },
+  {
+    name: "SpendWise",
+    category: "Web",
+    type: "PERSONAL FINANCE / WEB APPLICATION",
+    description: "Make sense of where your money goes.",
+    detail:
+      "A personal expense tracker with account sign-in and a focused interface for understanding spending, designed to make everyday money management easier to follow.",
+    stack: "React / Vercel",
+    href: "https://spendwisemanagement.vercel.app",
+    github: "https://github.com/monishkandanuru/spendwise",
+    key: "spendwise",
+    image: "/projects/spendwise.png",
+    imageAlt: "SpendWise public sign-in screen",
+    status: "LIVE PROJECT",
+    features: ["Account sign-in", "Expense tracking", "Spending overview"],
+  },
+  {
+    name: "VaultEye",
+    category: "Android",
+    type: "ANDROID / PRIVACY & FINANCE",
+    description: "A different perspective on your digital life.",
+    detail:
+      "An Android project exploring the relationship between privacy and personal finance intelligence. Visit the public repository for its project overview.",
+    stack: "Android",
+    href: "https://github.com/monishkandanuru/VaultEye",
+    github: "https://github.com/monishkandanuru/VaultEye",
+    key: "vaulteye",
+    image: null,
+    imageAlt: "",
+    status: "SOURCE AVAILABLE",
+    features: [
+      "Android project",
+      "Privacy & finance concept",
+      "Public project repository",
+    ],
   },
 ];
-function ProjectCard(props: { project: typeof projects[0]; index: number }) {
-  const { project, index } = props;
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const hasLinks = project.liveUrl || project.apkUrl || project.githubUrl;
+function Cover({ project }: { project: (typeof projects)[number] }) {
+  if (project.image)
+    return (
+      <div className={"live-capture capture-" + project.key}>
+        <div className="capture-chrome">
+          <i />
+          <i />
+          <i />
+          <span>{project.name} / WEB EXPERIENCE</span>
+        </div>
+        <Image
+          src={project.image}
+          alt={project.imageAlt}
+          width={1440}
+          height={960}
+          sizes="(max-width: 767px) 90vw, (max-width: 1000px) 85vw, 60vw"
+        />
+      </div>
+    );
+  if (project.key === "fitai")
+    return (
+      <div className="fitai-poster" aria-hidden="true">
+        <span className="poster-eyebrow">
+          A FITNESS JOURNAL FOR YOUR EVERYDAY.
+        </span>
+        <div className="fitai-logotype">
+          fit<span>ai</span>
+          <Dumbbell />
+        </div>
+        <div className="fitai-orbits">
+          <i />
+          <i />
+          <i />
+          <span>
+            START
+            <br />
+            <em>somewhere.</em>
+          </span>
+        </div>
+        <div className="poster-baseline">
+          <span>MOVE. LOG. REPEAT.</span>
+          <span>SMALL STEPS, EVERY DAY. ↗</span>
+        </div>
+      </div>
+    );
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 50 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.15 }} className="group relative glass glass-hover rounded-2xl p-7 overflow-hidden transition-all duration-500 hover:shadow-glow">
-      <div className="absolute top-0 right-0 w-[200px] h-[200px] rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: project.accentColor }} />
-      <div className="flex items-start justify-between mb-6 relative z-10">
-        <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110" style={{ background: project.accentColor, border: "1px solid " + project.color + "30" }}>
-            <project.icon size={20} style={{ color: project.color }} />
-          </div>
-          <div>
-            <span className="text-[10px] font-body font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider" style={{ background: project.badgeColor + "15", color: project.badgeColor, border: "1px solid " + project.badgeColor + "25" }}>
-              {project.badge}
-            </span>
-            <p className="text-muted text-xs mt-0.5 font-body">{project.label}</p>
-          </div>
-        </div>
-        <ArrowUpRight size={16} className="text-muted group-hover:text-white transition-colors duration-300 mt-1" />
+    <div className="vault-poster" aria-hidden="true">
+      <ShieldCheck className="vault-symbol" />
+      <span className="poster-eyebrow">YOUR DIGITAL LIFE, CONSIDERED.</span>
+      <div className="vault-logotype">
+        Vault<span>Eye.</span>
       </div>
-      <h3 className="font-heading font-bold text-xl text-white mb-1 relative z-10">{project.title}</h3>
-      <p className="text-muted text-sm font-body italic mb-5 relative z-10">{project.tagline}</p>
-      <div className="space-y-3 mb-5 relative z-10">
-        <div className="flex gap-3">
-          <span className="text-red-400/70 text-xs font-body font-semibold pt-0.5 flex-shrink-0 w-14">Problem</span>
-          <p className="text-muted text-sm font-body leading-relaxed">{project.problem}</p>
-        </div>
-        <div className="flex gap-3">
-          <span className="text-xs font-body font-semibold pt-0.5 flex-shrink-0 w-14" style={{ color: project.color }}>Solution</span>
-          <p className="text-white/80 text-sm font-body leading-relaxed">{project.solution}</p>
-        </div>
-        <div className="flex gap-3">
-          <span className="text-green-400/80 text-xs font-body font-semibold pt-0.5 flex-shrink-0 w-14">Result</span>
-          <p className="text-white/60 text-sm font-body leading-relaxed italic">{project.result}</p>
-        </div>
+      <div className="poster-baseline">
+        <span>PRIVACY × FINANCE</span>
+        <span>AN ANDROID EXPLORATION ↗</span>
       </div>
-      <div className="flex flex-wrap gap-2 mb-6 relative z-10">
-        {project.tech.map(function(t) {
-          return <span key={t} className="text-[11px] font-body px-3 py-1 rounded-lg bg-white/5 text-muted border border-white/5">{t}</span>;
-        })}
-      </div>
-      {hasLinks && (
-        <div className="flex flex-wrap gap-3 relative z-10 pt-4 border-t border-white/5">
-          {project.liveUrl && (
-            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-primary text-sm py-2.5 px-5">
-              <span className="flex items-center gap-2"><ExternalLink size={14} />Live Preview</span>
-            </a>
-          )}
-          {project.apkUrl && (
-            <a href={project.apkUrl} className="btn-primary text-sm py-2.5 px-5" download>
-              <span className="flex items-center gap-2"><Download size={14} />Download APK</span>
-            </a>
-          )}
-          {project.githubUrl && (
-            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary text-sm py-2.5 px-5">View Code</a>
-          )}
-        </div>
-      )}
-      {!hasLinks && project.id === "vaulteye" && (
-        <div className="pt-4 border-t border-white/5 relative z-10">
-          <span className="text-xs text-muted font-body italic">APK + GitHub releasing soon — check back or </span>
-          <a href="/contact" className="text-xs text-primary hover:underline font-body">get notified.</a>
-        </div>
-      )}
-    </motion.div>
+    </div>
   );
 }
 export default function Projects() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [filter, setFilter] = useState("All");
+  const [expanded, setExpanded] = useState<string[]>([]);
+  const shown = projects.filter(
+    (p) => filter === "All" || p.category === filter,
+  );
   return (
-    <section id="projects" className="py-28 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-transparent to-primary/30" />
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="text-center mb-16 space-y-4">
-          <span className="section-label">Selected Work</span>
-          <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl">
-            Projects That <span className="gradient-text">Solve Real Problems</span>
-          </h2>
-          <p className="font-body text-muted max-w-xl mx-auto text-base">Every project here started with a real problem. This is what was built, why it was built, and what happened after.</p>
-        </motion.div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map(function(project, i) {
-            return <ProjectCard key={project.id} project={project} index={i} />;
-          })}
+    <section id="projects" className="work-gallery">
+      <div className="shell">
+        <div className="gallery-header">
+          <div>
+            <span className="eyebrow">01 / IDEAS MADE REAL</span>
+            <h2>
+              Selected <em>work.</em>
+              <sup>05</sup>
+            </h2>
+          </div>
+          <p>
+            Different challenges.
+            <br />
+            The same attention to detail.
+          </p>
         </div>
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4, duration: 0.5 }} className="text-center mt-14">
-          <p className="text-muted font-body text-sm mb-5">Have a project in mind? Let's build something better.</p>
-          <a href="/contact" className="btn-primary">
-            <span className="flex items-center gap-2">Start Your Project <ArrowUpRight size={15} /></span>
+        <div className="gallery-toolbar">
+          <div
+            className="work-filters"
+            role="group"
+            aria-label="Filter projects"
+          >
+            {["All", "Web", "Android"].map((f) => (
+              <button
+                key={f}
+                aria-pressed={f === filter}
+                onClick={() => setFilter(f)}
+              >
+                {f === "All" ? "All projects" : f}
+                <span>{f === "All" ? "05" : f === "Web" ? "04" : "01"}</span>
+              </button>
+            ))}
+          </div>
+          <span className="gallery-hint">
+            EXPLORE THE DETAILS <ArrowDownMark />
+          </span>
+        </div>
+        <span className="sr-only" aria-live="polite">
+          Showing {shown.length} {filter.toLowerCase()} projects
+        </span>
+        <div
+          className={
+            "editorial-projects" +
+            (filter !== "All" ? " filtered-projects" : "")
+          }
+        >
+          {shown.map((p) => (
+            <article className={"editorial-project item-" + p.key} key={p.key}>
+              <a
+                className={"project-cover cover-" + p.key}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={
+                  "Open " +
+                  p.name +
+                  (p.status === "LIVE PROJECT" ? " live project" : " on GitHub")
+                }
+              >
+                <div className="cover-topline">
+                  <span>
+                    0{projects.indexOf(p) + 1} / {p.name}
+                  </span>
+                  <span className="project-status">
+                    <i />
+                    {p.status}
+                  </span>
+                </div>
+                <Cover project={p} />
+                <span className="cover-caption">
+                  {p.image
+                    ? "CAPTURED FROM THE LIVE WEBSITE"
+                    : "PROJECT IDENTITY EXPLORATION"}
+                </span>
+                <span className="cover-open">
+                  <ArrowUpRight />
+                </span>
+              </a>
+              <div className="editorial-meta">
+                <span className="eyebrow">{p.type}</span>
+                <span>{p.stack}</span>
+              </div>
+              <div className="editorial-title">
+                <a href={p.href} target="_blank" rel="noopener noreferrer">
+                  <h3>{p.name}</h3>
+                </a>
+                <button
+                  aria-label={
+                    (expanded.includes(p.key) ? "Hide" : "Show") +
+                    " " +
+                    p.name +
+                    " project details"
+                  }
+                  aria-expanded={expanded.includes(p.key)}
+                  aria-controls={"details-" + p.key}
+                  onClick={() =>
+                    setExpanded((prev) =>
+                      prev.includes(p.key)
+                        ? prev.filter((k) => k !== p.key)
+                        : [...prev, p.key],
+                    )
+                  }
+                >
+                  {expanded.includes(p.key) ? (
+                    <Minus size={20} />
+                  ) : (
+                    <Plus size={20} />
+                  )}
+                </button>
+              </div>
+              <p className="project-one-liner">{p.description}</p>
+              <div
+                className="project-details"
+                id={"details-" + p.key}
+                hidden={!expanded.includes(p.key)}
+              >
+                <p>{p.detail}</p>
+                <ul>
+                  {p.features.map((f) => (
+                    <li key={f}>{f}</li>
+                  ))}
+                </ul>
+                <div className="project-detail-links">
+                  <a href={p.href} target="_blank" rel="noopener noreferrer">
+                    {p.status === "LIVE PROJECT"
+                      ? "Visit live project"
+                      : "Explore repository"}
+                    <ArrowUpRight size={15} />
+                  </a>
+                  {p.github && p.github !== p.href && (
+                    <a
+                      href={p.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View source
+                      <ArrowUpRight size={15} />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="gallery-footer">
+          <span>BUILT WITH CURIOSITY. FINISHED WITH CARE.</span>
+          <a
+            href="https://github.com/monishkandanuru"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            More on GitHub <ArrowUpRight size={16} />
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
+  );
+}
+function ArrowDownMark() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M6 1v9M2 6l4 4 4-4" stroke="currentColor" />
+    </svg>
   );
 }

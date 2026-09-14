@@ -2,24 +2,36 @@ import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
   title: "Monish Kandanuru — Web & App Developer",
-  description: "I design and build high-quality websites and apps that help businesses attract, impress, and convert customers.",
-  keywords: "web developer, app developer, Next.js, React, mobile app, Bangalore, India, Monish Kandanuru",
+  description:
+    "I design and build high-quality websites and apps that help businesses attract, impress, and convert customers.",
+  keywords:
+    "web developer, app developer, Next.js, React, mobile app, Bangalore, India, Monish Kandanuru",
   icons: { icon: "/favicon.svg" },
   verification: {
     google: "tkpCW4Y_AjKJSgLv4OpDAeCilZtY6sF5Im7dpeky9Gs",
   },
   openGraph: {
     title: "Monish Kandanuru — Web & App Developer",
-    description: "High-quality websites and apps that help businesses attract, impress, and convert customers.",
+    description:
+      "High-quality websites and apps that help businesses attract, impress, and convert customers.",
     type: "website",
     locale: "en_IN",
     url: "https://monishbuilds.vercel.app",
   },
 };
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className="bg-bg text-white font-body antialiased">{children}</body>
+    <html lang="en" id="top">
+      <body>
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

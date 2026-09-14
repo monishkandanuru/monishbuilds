@@ -1,22 +1,24 @@
-"use client";
+import ScrollReveal from "@/components/ScrollReveal";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
+import Projects from "@/components/Projects";
+import Services from "@/components/Services";
+import Trust from "@/components/Trust";
 import FinalCTA from "@/components/FinalCTA";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import CustomCursor from "@/components/CustomCursor";
-export default function Home() {
+export default function Page() {
   return (
     <>
-      <CustomCursor />
+      <ScrollReveal />
       <Navbar />
-      <main>
+      <main id="main-content">
         <Hero />
+        <Projects />
+        <Services />
+        <Trust />
         <FinalCTA />
       </main>
-      <FloatingWhatsApp />
-      <footer className="border-t border-white/5 py-8 text-center text-muted text-sm font-body">
-        © {new Date().getFullYear()} Monish Kandanuru. Built with purpose, not just code.
-      </footer>
+      <Footer />
     </>
   );
 }

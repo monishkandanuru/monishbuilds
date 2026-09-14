@@ -1,20 +1,15 @@
-"use client";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import CustomCursor from "@/components/CustomCursor";
-export default function ContactPage() {
+export default function Page() {
   return (
     <>
-      <CustomCursor />
       <Navbar />
-      <main className="pt-20">
+      <main id="main-content" className="inner-page">
+        <h1 className="sr-only">Start a project with Monish</h1>
         <ContactForm />
       </main>
-      <FloatingWhatsApp />
-      <footer className="border-t border-white/5 py-8 text-center text-muted text-sm font-body">
-        © {new Date().getFullYear()} Monish Kandanuru. Built with purpose, not just code.
-      </footer>
+      <Footer />
     </>
   );
 }

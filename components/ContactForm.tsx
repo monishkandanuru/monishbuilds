@@ -2,7 +2,17 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { Send, MessageCircle, ChevronDown, User, Mail, FileText, Target, Banknote, Clock } from "lucide-react";
+import {
+  Send,
+  MessageCircle,
+  ChevronDown,
+  User,
+  Mail,
+  FileText,
+  Target,
+  Banknote,
+  Clock,
+} from "lucide-react";
 const WHATSAPP_NUMBER = "919880702013";
 const WEB3FORMS_KEY = "09f97344-f589-4ecb-a192-0732f7213cce";
 const serviceOptions = [
@@ -38,9 +48,15 @@ export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+  function handleChange(
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) {
     const { name, value } = e.target;
-    setFormData(function(prev) { return { ...prev, [name]: value }; });
+    setFormData(function (prev) {
+      return { ...prev, [name]: value };
+    });
   }
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,10 +65,16 @@ export default function ContactForm() {
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          subject: "New Project Inquiry - " + formData.service + " | monishbuilds.vercel.app",
+          subject:
+            "New Project Inquiry - " +
+            formData.service +
+            " | monishbuilds.vercel.app",
           from_name: "Monish Kandanuru Portfolio",
           name: formData.name,
           email: formData.email,
@@ -64,7 +86,7 @@ export default function ContactForm() {
         }),
       });
       const data = await res.json();
-      if (data.success) {
+      if (res.ok && data.success) {
         setSubmitted(true);
       } else {
         setError("Something went wrong. Please try WhatsApp instead.");
@@ -74,35 +96,53 @@ export default function ContactForm() {
     }
     setLoading(false);
   }
-  const isValid = formData.name && formData.email && formData.service && formData.goal && formData.budget;
+  const isValid =
+    formData.name &&
+    formData.email &&
+    formData.service &&
+    formData.goal &&
+    formData.budget;
   return (
     <section id="contact" className="py-28 relative">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          <motion.div ref={ref} initial={{ opacity: 0, x: -40 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }} className="lg:sticky lg:top-28 space-y-7">
+          <motion.div
+            ref={ref}
+            initial={{ opacity: 0, x: -40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="lg:sticky lg:top-28 space-y-7"
+          >
             <div>
               <span className="section-label block mb-4">Get in Touch</span>
               <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight">
-                {"Let's Build "}<span className="gradient-text">Something Valuable</span>
+                {"Let's Build "}
+                <span className="gradient-text">Something Valuable</span>
               </h2>
               <p className="font-body text-muted mt-4 text-base leading-relaxed">
-                {"Fill in your project details — Monish will review and respond within 24 hours with the best approach for your needs."}
+                {
+                  "Fill in your project details — Monish will review and respond within 24 hours with the best approach for your needs."
+                }
               </p>
             </div>
             <div className="glass rounded-2xl p-5 space-y-3">
-              <p className="font-heading font-semibold text-sm text-white mb-4">What happens next?</p>
+              <p className="font-heading font-semibold text-sm text-white mb-4">
+                What happens next?
+              </p>
               {[
                 "Monish reviews your submission within 24 hours",
                 "You get a response with questions or an initial approach",
                 "A short discovery call is scheduled",
                 "You receive a clear scope, timeline and quote",
-              ].map(function(step, i) {
+              ].map(function (step, i) {
                 return (
                   <div key={i} className="flex items-start gap-3">
                     <div className="w-5 h-5 rounded-full bg-brand-gradient flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-[9px] font-heading font-bold text-white">{i + 1}</span>
+                      <span className="text-[9px] font-heading font-bold text-white">
+                        {i + 1}
+                      </span>
                     </div>
                     <p className="text-muted text-sm font-body">{step}</p>
                   </div>
@@ -110,105 +150,278 @@ export default function ContactForm() {
               })}
             </div>
             <div className="space-y-3">
-              <p className="text-muted text-xs font-body">Prefer to chat directly?</p>
-              <a href={"https://wa.me/" + WHATSAPP_NUMBER} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 w-full glass rounded-xl p-4 border border-green-500/20 hover:border-green-500/40 transition-all duration-300 group">
+              <p className="text-muted text-xs font-body">
+                Prefer to chat directly?
+              </p>
+              <a
+                href={"https://wa.me/" + WHATSAPP_NUMBER}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 w-full glass rounded-xl p-4 border border-green-500/20 hover:border-green-500/40 transition-all duration-300 group"
+              >
                 <div className="w-9 h-9 rounded-lg bg-green-500/15 flex items-center justify-center">
                   <MessageCircle size={16} className="text-green-400" />
                 </div>
                 <div>
-                  <p className="font-heading font-semibold text-sm text-white">Chat with Monish on WhatsApp</p>
-                  <p className="text-muted text-xs font-body">Quick questions welcome</p>
+                  <p className="font-heading font-semibold text-sm text-white">
+                    Chat with Monish on WhatsApp
+                  </p>
+                  <p className="text-muted text-xs font-body">
+                    Quick questions welcome
+                  </p>
                 </div>
-                <span className="ml-auto text-muted group-hover:text-green-400 transition-colors text-sm">{"→"}</span>
+                <span className="ml-auto text-muted group-hover:text-green-400 transition-colors text-sm">
+                  {"→"}
+                </span>
               </a>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 40 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }}>
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             {submitted ? (
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="glass rounded-2xl p-10 text-center space-y-4 border border-primary/20">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                role="status"
+                className="glass rounded-2xl p-10 text-center space-y-4 border border-primary/20"
+              >
                 <div className="w-16 h-16 rounded-full bg-brand-gradient flex items-center justify-center mx-auto">
                   <Send size={24} className="text-white" />
                 </div>
-                <h3 className="font-heading font-bold text-2xl text-white">Message Received!</h3>
+                <h3 className="font-heading font-bold text-2xl text-white">
+                  Message Received!
+                </h3>
                 <p className="text-muted font-body">
-                  {"Thanks for reaching out. Monish will review your project brief and get back to you within 24 hours."}
+                  {
+                    "Thanks for reaching out. Monish will review your project brief and get back to you within 24 hours."
+                  }
                 </p>
                 <div className="pt-2 space-y-2">
-                  <p className="text-xs text-muted font-body">Want a faster response?</p>
-                  <a href={"https://wa.me/" + WHATSAPP_NUMBER} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-green-400 hover:text-green-300 font-body transition-colors">
+                  <p className="text-xs text-muted font-body">
+                    Want a faster response?
+                  </p>
+                  <a
+                    href={"https://wa.me/" + WHATSAPP_NUMBER}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-green-400 hover:text-green-300 font-body transition-colors"
+                  >
                     <MessageCircle size={14} />
                     Chat on WhatsApp
                   </a>
                 </div>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="glass rounded-2xl p-7 space-y-5">
+              <form
+                onSubmit={handleSubmit}
+                className="glass rounded-2xl p-7 space-y-5"
+              >
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="flex items-center gap-1.5 text-xs text-muted font-body"><User size={11} /> Your Name *</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Your full name" className="premium-input" required />
+                    <label
+                      htmlFor="name"
+                      className="flex items-center gap-1.5 text-xs text-muted font-body"
+                    >
+                      <User size={11} /> Your Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your full name"
+                      className="premium-input"
+                      required
+                    />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="flex items-center gap-1.5 text-xs text-muted font-body"><Mail size={11} /> Email Address *</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="your@email.com" className="premium-input" required />
+                    <label
+                      htmlFor="email"
+                      className="flex items-center gap-1.5 text-xs text-muted font-body"
+                    >
+                      <Mail size={11} /> Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="your@email.com"
+                      className="premium-input"
+                      required
+                    />
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="flex items-center gap-1.5 text-xs text-muted font-body"><FileText size={11} /> What do you need? *</label>
+                  <label
+                    htmlFor="service"
+                    className="flex items-center gap-1.5 text-xs text-muted font-body"
+                  >
+                    <FileText size={11} /> What do you need? *
+                  </label>
                   <div className="relative">
-                    <select name="service" value={formData.service} onChange={handleChange} className="premium-select" required>
-                      <option value="" disabled>Select a service...</option>
-                      {serviceOptions.map(function(o) { return <option key={o.value} value={o.value}>{o.label}</option>; })}
+                    <select
+                      id="service"
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className="premium-select"
+                      required
+                    >
+                      <option value="" disabled>
+                        Select a service...
+                      </option>
+                      {serviceOptions.map(function (o) {
+                        return (
+                          <option key={o.value} value={o.value}>
+                            {o.label}
+                          </option>
+                        );
+                      })}
                     </select>
-                    <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                    <ChevronDown
+                      size={14}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                    />
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="flex items-center gap-1.5 text-xs text-muted font-body"><Target size={11} /> What is your goal? *</label>
-                  <input type="text" name="goal" value={formData.goal} onChange={handleChange} placeholder="e.g. Get more clients, improve my online presence..." className="premium-input" required />
+                  <label
+                    htmlFor="goal"
+                    className="flex items-center gap-1.5 text-xs text-muted font-body"
+                  >
+                    <Target size={11} /> What is your goal? *
+                  </label>
+                  <input
+                    type="text"
+                    id="goal"
+                    name="goal"
+                    value={formData.goal}
+                    onChange={handleChange}
+                    placeholder="e.g. Get more clients, improve my online presence..."
+                    className="premium-input"
+                    required
+                  />
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="flex items-center gap-1.5 text-xs text-muted font-body"><Banknote size={11} /> Budget Range *</label>
+                    <label
+                      htmlFor="budget"
+                      className="flex items-center gap-1.5 text-xs text-muted font-body"
+                    >
+                      <Banknote size={11} /> Budget Range (INR) *
+                    </label>
                     <div className="relative">
-                      <select name="budget" value={formData.budget} onChange={handleChange} className="premium-select" required>
-                        <option value="" disabled>Select budget...</option>
-                        {budgetOptions.map(function(o) { return <option key={o.value} value={o.value}>{o.label}</option>; })}
+                      <select
+                        id="budget"
+                        name="budget"
+                        value={formData.budget}
+                        onChange={handleChange}
+                        className="premium-select"
+                        required
+                      >
+                        <option value="" disabled>
+                          Select budget...
+                        </option>
+                        {budgetOptions.map(function (o) {
+                          return (
+                            <option key={o.value} value={o.value}>
+                              {o.label}
+                            </option>
+                          );
+                        })}
                       </select>
-                      <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                      <ChevronDown
+                        size={14}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                      />
                     </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="flex items-center gap-1.5 text-xs text-muted font-body"><Clock size={11} /> Timeline</label>
+                    <label
+                      htmlFor="timeline"
+                      className="flex items-center gap-1.5 text-xs text-muted font-body"
+                    >
+                      <Clock size={11} /> Timeline
+                    </label>
                     <div className="relative">
-                      <select name="timeline" value={formData.timeline} onChange={handleChange} className="premium-select">
-                        <option value="" disabled>Select timeline...</option>
-                        {timelineOptions.map(function(o) { return <option key={o.value} value={o.value}>{o.label}</option>; })}
+                      <select
+                        id="timeline"
+                        name="timeline"
+                        value={formData.timeline}
+                        onChange={handleChange}
+                        className="premium-select"
+                      >
+                        <option value="" disabled>
+                          Select timeline...
+                        </option>
+                        {timelineOptions.map(function (o) {
+                          return (
+                            <option key={o.value} value={o.value}>
+                              {o.label}
+                            </option>
+                          );
+                        })}
                       </select>
-                      <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
+                      <ChevronDown
+                        size={14}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="flex items-center gap-1.5 text-xs text-muted font-body"><FileText size={11} /> Project Details</label>
-                  <textarea name="details" value={formData.details} onChange={handleChange} rows={4} placeholder="Tell Monish about your project, business, target audience, any references..." className="premium-input resize-none" />
+                  <label
+                    htmlFor="details"
+                    className="flex items-center gap-1.5 text-xs text-muted font-body"
+                  >
+                    <FileText size={11} /> Project Details
+                  </label>
+                  <textarea
+                    id="details"
+                    name="details"
+                    value={formData.details}
+                    onChange={handleChange}
+                    rows={4}
+                    placeholder="Tell Monish about your project, business, target audience, any references..."
+                    className="premium-input resize-none"
+                  />
                 </div>
                 {error && (
                   <div className="glass rounded-xl p-3 border border-red-500/20">
-                    <p className="text-red-400 text-xs font-body">{error}</p>
+                    <p role="alert" className="text-red-400 text-xs font-body">
+                      {error}
+                    </p>
                   </div>
                 )}
                 <div className="pt-2 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                  <button type="submit" disabled={!isValid || loading} className="btn-primary disabled:opacity-40 disabled:cursor-not-allowed">
+                  <button
+                    type="submit"
+                    disabled={!isValid || loading}
+                    className="btn-primary disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
                     <span className="flex items-center gap-2">
                       {loading ? (
-                        <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Sending...</>
+                        <>
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Sending...
+                        </>
                       ) : (
-                        <><Send size={15} />Send to Monish</>
+                        <>
+                          <Send size={15} />
+                          Send to Monish
+                        </>
                       )}
                     </span>
                   </button>
-                  <p className="text-muted text-xs font-body">Monish responds within 24 hours.</p>
+                  <p className="text-muted text-xs font-body">
+                    Monish responds within 24 hours.
+                  </p>
                 </div>
               </form>
             )}
