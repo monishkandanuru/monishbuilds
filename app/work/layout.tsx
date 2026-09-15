@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 export const metadata: Metadata = {
+  alternates: { canonical: "/work" },
   title: "Work — Monish Kandanuru",
   description:
     "Projects built to solve real business problems. ThermoWatch, FitAI, NewGen Technologies, SpendWise, and VaultEye.",

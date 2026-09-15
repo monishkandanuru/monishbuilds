@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
+  metadataBase: new URL("https://monishbuilds.vercel.app"),
   title: "Monish Kandanuru — Web & App Developer",
   description:
     "I design and build high-quality websites and apps that help businesses attract, impress, and convert customers.",
