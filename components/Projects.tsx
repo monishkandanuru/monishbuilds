@@ -32,12 +32,12 @@ const projects = [
     detail:
       "A Python and Flask fitness journal with account authentication, adult BMI measurement history, workout logs, meal tracking, and a dashboard backed by saved records. The journal keeps user-entered records together in a focused, account-based experience.",
     stack: "Python / Flask / SQL",
-    href: "https://github.com/monishkandanuru/FitAI",
+    href: "https://fit-ai-olive-delta.vercel.app",
     github: "https://github.com/monishkandanuru/FitAI",
     key: "fitai",
     image: null,
     imageAlt: "",
-    status: "SOURCE AVAILABLE",
+    status: "LIVE PROJECT",
     features: [
       "Workout and meal journals",
       "Measurement history",
