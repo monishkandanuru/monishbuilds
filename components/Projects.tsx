@@ -35,8 +35,8 @@ const projects = [
     href: "https://fit-ai-olive-delta.vercel.app",
     github: "https://github.com/monishkandanuru/FitAI",
     key: "fitai",
-    image: null,
-    imageAlt: "",
+    image: "/projects/fitai.png",
+    imageAlt: "FitAI live website homepage showing the fitness and nutrition coach interface",
     status: "LIVE PROJECT",
     features: [
       "Workout and meal journals",
