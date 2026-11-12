@@ -15,7 +15,7 @@ uvicorn app:app --reload --port 8000
 
 Set the values from `.env.example` in your shell or deployment provider. Never commit `.env`.
 
-Open `http://localhost:8000/docs` to sign in and manage projects. The live portfolio can use `GET /projects` once the backend has been deployed to a host with persistent database storage.
+Open `http://localhost:8000/admin` to sign in and manage projects. The API documentation is also available at `http://localhost:8000/docs`. The live portfolio can use `GET /projects` once the backend has been deployed to a host with persistent database storage.
 
 ## Deploying
 

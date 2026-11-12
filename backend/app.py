@@ -18,6 +18,7 @@ from typing import Annotated
 
 from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field, HttpUrl
 
 
@@ -77,6 +78,30 @@ SEED_PROJECTS = [
         "github": "https://github.com/monishkandanuru/FitAI", "image": "/projects/fitai.png",
         "image_alt": "FitAI fitness and nutrition coach", "status": "LIVE PROJECT",
         "features": ["Workout and meal journals", "Measurement history", "Account-based dashboard"], "published": True,
+    },
+    {
+        "key": "newgen", "name": "NewGen Technologies", "category": "Web", "type": "CLIENT WORK / BUSINESS WEBSITE",
+        "description": "An established engineering business, clearly presented.",
+        "detail": "A collaborative website project for a pharmaceutical and cleanroom infrastructure company.",
+        "stack": "Next.js / Tailwind CSS", "href": "https://newgenprojects.in", "github": None,
+        "image": "/projects/newgen.png", "image_alt": "NewGen Technologies website", "status": "LIVE PROJECT",
+        "features": ["Service-focused architecture", "Responsive layouts", "Collaborative development"], "published": True,
+    },
+    {
+        "key": "spendwise", "name": "SpendWise", "category": "Web", "type": "PERSONAL FINANCE / WEB APPLICATION",
+        "description": "Make sense of where your money goes.",
+        "detail": "A personal expense tracker with account sign-in and a focused interface for understanding spending.",
+        "stack": "React / Vercel", "href": "https://spendwisemanagement.vercel.app", "github": "https://github.com/monishkandanuru/spendwise",
+        "image": "/projects/spendwise.png", "image_alt": "SpendWise public sign-in screen", "status": "LIVE PROJECT",
+        "features": ["Account sign-in", "Expense tracking", "Spending overview"], "published": True,
+    },
+    {
+        "key": "vaulteye", "name": "VaultEye", "category": "Android", "type": "ANDROID / PRIVACY & FINANCE",
+        "description": "A different perspective on your digital life.",
+        "detail": "An Android project exploring the relationship between privacy and personal finance intelligence.",
+        "stack": "Android", "href": "https://github.com/monishkandanuru/VaultEye", "github": "https://github.com/monishkandanuru/VaultEye",
+        "image": None, "image_alt": "", "status": "SOURCE AVAILABLE",
+        "features": ["Android project", "Privacy & finance concept", "Public project repository"], "published": True,
     },
 ]
 
@@ -156,6 +181,27 @@ origins = [origin.strip() for origin in os.getenv("PORTFOLIO_ORIGIN", "http://lo
 app = FastAPI(title="Monish Portfolio Admin API", version="1.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PATCH", "DELETE"], allow_headers=["Authorization", "Content-Type"])
 
+ADMIN_PAGE = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio Admin</title><style>
+*{box-sizing:border-box}body{margin:0;background:#111612;color:#eef0e8;font:16px system-ui,sans-serif}.shell{max-width:960px;margin:0 auto;padding:48px 24px}h1{font-size:42px;margin:0 0 8px}p{color:#adb5a6}.card{background:#1b211c;border:1px solid #364039;border-radius:18px;padding:24px;margin-top:24px}input,textarea,button{font:inherit;border-radius:9px;padding:12px}input,textarea{width:100%;background:#101510;border:1px solid #414b43;color:#fff;margin:8px 0 16px}textarea{min-height:360px;font:13px ui-monospace,monospace}button{background:#dfeabc;color:#1d281a;border:0;font-weight:700;cursor:pointer;margin-right:8px}.danger{background:#432422;color:#ffd9d5}.muted{background:#313a33;color:#fff}.projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.project{width:100%;text-align:left;background:#273129;color:#fff}.hidden{display:none}.note{min-height:24px;color:#dfeabc}</style></head>
+<body><main class="shell"><h1>Portfolio admin</h1><p>Manage the projects shown on your portfolio.</p>
+<section id="login" class="card"><label>Admin password<input id="password" type="password" autocomplete="current-password"></label><button onclick="login()">Sign in</button><p id="loginNote" class="note"></p></section>
+<section id="workspace" class="hidden"><div class="card"><button onclick="newProject()">New project</button><button class="muted" onclick="loadProjects()">Refresh</button><div id="projectList" class="projects" style="margin-top:18px"></div></div>
+<div class="card"><h2 id="editorTitle">Project</h2><p>Edit fields as JSON. Keep the project key unchanged when updating an existing project.</p><textarea id="editor"></textarea><p id="note" class="note"></p><button onclick="saveProject()">Save changes</button><button class="danger" onclick="deleteProject()">Delete project</button></div></section></main>
+<script>
+let token=sessionStorage.getItem('portfolioAdminToken')||'', activeKey='';
+const loginPanel=document.getElementById('login'), workspacePanel=document.getElementById('workspace'), passwordInput=document.getElementById('password'), loginNote=document.getElementById('loginNote'), projectList=document.getElementById('projectList'), editor=document.getElementById('editor'), editorTitle=document.getElementById('editorTitle'), note=document.getElementById('note');
+const headers=()=>({'Content-Type':'application/json','Authorization':'Bearer '+token});
+async function login(){const res=await fetch('/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:passwordInput.value})});if(!res.ok){loginNote.textContent='Incorrect password or server not configured.';return}token=(await res.json()).token;sessionStorage.setItem('portfolioAdminToken',token);loginPanel.classList.add('hidden');workspacePanel.classList.remove('hidden');loadProjects()}
+async function loadProjects(){const res=await fetch('/admin/projects',{headers:headers()});if(!res.ok){note.textContent='Your session has expired. Sign in again.';return}const items=await res.json();projectList.innerHTML='';items.forEach(project=>{const button=document.createElement('button');button.className='project';button.textContent=project.name+(project.published?'':' (hidden)');button.onclick=()=>selectProject(project);projectList.append(button)});if(items.length&&!activeKey)selectProject(items[0])}
+function selectProject(project){activeKey=project.key;editorTitle.textContent=project.name;editor.value=JSON.stringify(project,null,2);note.textContent=''}
+function newProject(){activeKey='';editorTitle.textContent='New project';editor.value=JSON.stringify({key:'new-project',name:'New project',category:'Web',type:'WEB APPLICATION',description:'Short project description.',detail:'Describe the project and its outcome.',stack:'Python / FastAPI',href:'https://example.com',github:null,image:null,image_alt:'',status:'LIVE PROJECT',features:['First feature'],published:true},null,2);note.textContent=''}
+async function saveProject(){let project;try{project=JSON.parse(editor.value)}catch{note.textContent='Please fix the JSON first.';return}const method=activeKey?'PATCH':'POST',url=activeKey?'/admin/projects/'+encodeURIComponent(activeKey):'/admin/projects';const res=await fetch(url,{method,headers:headers(),body:JSON.stringify(project)});note.textContent=res.ok?'Saved.':((await res.json()).detail||'Could not save.');if(res.ok){activeKey=project.key;loadProjects()}}
+async function deleteProject(){if(!activeKey||!confirm('Delete this project?'))return;const res=await fetch('/admin/projects/'+encodeURIComponent(activeKey),{method:'DELETE',headers:headers()});if(res.ok){activeKey='';newProject();loadProjects()}else note.textContent='Could not delete.'}
+if(token){loginPanel.classList.add('hidden');workspacePanel.classList.remove('hidden');loadProjects()}
+</script></body></html>"""
+
 
 @app.on_event("startup")
 def startup() -> None:
@@ -165,6 +211,11 @@ def startup() -> None:
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok", "service": "portfolio-admin-api", "configured": CONFIGURED}
+
+
+@app.get("/admin", response_class=HTMLResponse, include_in_schema=False)
+def admin_page() -> str:
+    return ADMIN_PAGE
 
 
 @app.post("/auth/login", response_model=LoginResponse)

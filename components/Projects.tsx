@@ -1,8 +1,24 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Plus, Minus, ShieldCheck, Dumbbell } from "lucide-react";
-const projects = [
+type Project = {
+  name: string;
+  category: string;
+  type: string;
+  description: string;
+  detail: string;
+  stack: string;
+  href: string;
+  github: string | null;
+  key: string;
+  image: string | null;
+  imageAlt: string;
+  status: string;
+  features: string[];
+};
+
+const staticProjects: Project[] = [
   {
     name: "ThermoWatch",
     category: "Web",
@@ -102,7 +118,7 @@ const projects = [
     ],
   },
 ];
-function Cover({ project }: { project: (typeof projects)[number] }) {
+function Cover({ project }: { project: Project }) {
   if (project.image)
     return (
       <div className={"live-capture capture-" + project.key}>
@@ -164,6 +180,29 @@ function Cover({ project }: { project: (typeof projects)[number] }) {
 export default function Projects() {
   const [filter, setFilter] = useState("All");
   const [expanded, setExpanded] = useState<string[]>([]);
+  const [projects, setProjects] = useState<Project[]>(staticProjects);
+
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_PORTFOLIO_API_URL;
+    if (!apiUrl) return;
+
+    fetch(apiUrl.replace(/\/$/, "") + "/projects")
+      .then((response) => (response.ok ? response.json() : Promise.reject()))
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setProjects(
+            data.map((project) => ({
+              ...project,
+              imageAlt: project.image_alt || "",
+            })),
+          );
+        }
+      })
+      .catch(() => {
+        // Keep the built-in project data available if the API is offline.
+      });
+  }, []);
+
   const shown = projects.filter(
     (p) => filter === "All" || p.category === filter,
   );
