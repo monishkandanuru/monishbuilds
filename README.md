@@ -18,6 +18,7 @@ Open http://localhost:3000. Run `npm run build` to check the production build, i
 - `components/Services.tsx`: services.
 - `components/ContactForm.tsx`: existing Web3Forms integration and contact options.
 - `app/globals.css`: responsive design, typography, and motion preferences.
+- `backend/`: Python FastAPI admin API for adding, editing, publishing, and removing portfolio projects.
 
 ThermoWatch, NewGen Technologies, and SpendWise use screenshots captured from their public websites in `public/projects/`. SpendWise shows its public sign-in screen. FitAI and VaultEye use clearly labelled graphic identity explorations, without invented dashboards or metrics. The original AI-generated chrome monogram lives at `public/monish-chrome.png`; it is decorative and rendered through Next Image. The hero responds gently to mouse movement and respects reduced-motion preferences.
 
@@ -35,3 +36,7 @@ Reviewed against public GitHub documentation on 14 September 2026:
 The production build performs type checking. Browser checks cover responsive layouts, mobile navigation, category-filter results, expandable project details, image loading, labelled contact fields, and submit-button enablement. Form delivery requires a live Web3Forms submission; preview verification does not send messages.
 
 The existing deleted `next.config.mjs` and `SETUP_GUIDE.md` were left untouched.
+
+## Python admin backend
+
+The project-management backend lives in [`backend/`](backend/). It uses FastAPI and a local SQLite database for development. See [`backend/README.md`](backend/README.md) for setup and deployment requirements.
