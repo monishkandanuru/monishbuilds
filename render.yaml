@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: monishbuilds-admin-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    plan: 0.5c-512mb
+    disk:
+      name: portfolio-admin-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_TOKEN_SECRET
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /var/data/portfolio.db
+      - key: PORTFOLIO_ORIGIN
+        value: https://monishbuilds.vercel.app

@@ -19,4 +19,4 @@ Open `http://localhost:8000/admin` to sign in and manage projects. The API docum
 
 ## Deploying
 
-Deploy this folder as a separate Python service. Set `DATABASE_PATH` to persistent storage or replace SQLite with a managed PostgreSQL database before a production deployment. Set `ADMIN_PASSWORD` and `ADMIN_TOKEN_SECRET` as deployment secrets.
+The repository includes a [`render.yaml`](../render.yaml) Blueprint for deploying this folder as a separate Python service with a persistent disk. Set `ADMIN_PASSWORD` during the Render setup; Render generates `ADMIN_TOKEN_SECRET` automatically. After deployment, add the service URL as `NEXT_PUBLIC_PORTFOLIO_API_URL` in the portfolio's Vercel environment variables and redeploy the portfolio.
